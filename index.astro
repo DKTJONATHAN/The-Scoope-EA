@@ -1,0 +1,25 @@
+---
+import Layout from '../layouts/Layout.astro';
+const allPosts = await Astro.glob('../content/posts/*.md');
+const posts = allPosts.sort((a,b)=>new Date(b.frontmatter.pubDate)-new Date(a.frontmatter.pubDate)).slice(0,6);
+---
+<Layout title="Home">
+  <section style="width:100%;max-width:1200px;margin:0 auto;">
+    <h1 style="font-size:2rem;font-weight:700;color:var(--orange);margin-bottom:1rem;">East Africa's Breaking Buzz</h1>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:2rem;">
+      {posts.map(post => (
+        <a href={`/posts/${post.frontmatter.slug}`} style="text-decoration:none;">
+          <div style="background:var(--white);border-radius:12px;box-shadow:0 2px 9px rgba(0,0,0,.07);overflow:hidden;border:1px solid var(--grey);transition:.2s;">
+            <img src={post.frontmatter.image} alt={post.frontmatter.title} style="width:100%;height:230px;object-fit:cover;" />
+            <div style="padding:1.3rem;">
+              <span style="color:var(--orange);font-size:.9rem;font-weight:600;text-transform:uppercase;">{post.frontmatter.category}</span>
+              <h3 style="margin:.5rem 0 1rem 0;font-size:1.15rem;color:var(--black);font-weight:700;">{post.frontmatter.title}</h3>
+              <p style="color:var(--grey);margin-bottom:1rem;font-size:1rem;">{post.frontmatter.description}</p>
+              <span style="font-size:.9rem;color:var(--grey);">{post.frontmatter.author} • {new Date(post.frontmatter.pubDate).toLocaleDateString()}</span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>
